@@ -1,21 +1,21 @@
 from django.contrib import admin
 
-from shoe_shop import models
+from . import models
 
 
 class InventoryTypeAdmin(admin.ModelAdmin):
-    list_display = ['name', 
+    list_display = ['id', 'name', 
                     'created', 'created_by', 'modified', 'modified_by']
 
 
 class InventoryAdmin(admin.ModelAdmin):
-    list_display = ['sku', 'name', 'item_type', 'item_size', 'item_color', 
+    list_display = ['id', 'sku', 'name', 'item_type', 'item_size', 'item_color', 
                     'item_price',
                     'created', 'created_by', 'modified', 'modified_by']
 
 
 class InventoryOrderAdmin(admin.ModelAdmin):
-    list_display = ['customer', 'inventory', 'comments',
+    list_display = ['id', 'customer', 'inventory', 'comments',
                     'created', 'created_by', 'modified', 'modified_by']
 
 

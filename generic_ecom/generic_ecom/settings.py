@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # external libs
+    'rest_framework',
     'enumfields',
+    'drf_enum_field',
     'djmoney',
     # apps
     'shoe_shop.apps.ShoeShopConfig',
