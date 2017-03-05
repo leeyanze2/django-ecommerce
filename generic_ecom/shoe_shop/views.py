@@ -1,12 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.generic import ListView
+from django.utils.translation import ugettext_lazy as _
+
+from django.views import View
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 import models
+from lib_common import views as LibCommonViews
 from serializers import InventorySerializer, InventoryOrderSerializer
 
 
@@ -20,6 +24,7 @@ class RestInventoryList(APIView):
 
 class RestInventoryOrder(APIView):
 
+    # todo:mal: this function can be refactored later
     def post(self, request, format=None):
         """ Current user will place order"""
         inventory_id = request.data.get('inventory_id', None)
@@ -52,49 +57,55 @@ class RestInventoryOrder(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class BaseListView(ListView):
-    template_name = 'merchants/list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(BaseListView, self).get_context_data(**kwargs)
-
-        # self.title handling
-        if getattr(self, 'title', None) is None:
-            context['title'] = self.model.__name__
-        else:
-            context['title'] = self.title
-
-        context['fields'] = []
-        context['row_data'] = []
-
-        if self.fields is not None:
-            for field in self.fields:
-                context['fields'].append(field[1])
-
-            for value in context['object_list']:
-                current_row = []
-                for field in self.fields:
-                    if field[0] in value:
-                        current_row.append(value[field[0]])
-                    else:
-                        current_row.append('<data does not exist>')
-
-                context['row_data'].append(current_row)
-        else:
-            # the below case should only be used for debugging as it just dumps
-            # all the data in the object
-            if context['object_list'].count() > 0:
-                for key, value in context['object_list'][0].__dict__.iteritems():
-                    if not(str(key).startswith("_") or str(key).startswith("id")):
-                        context['fields'].append(key)
-            for value in context['object_list']:
-                current_row = []
-                for field_name in context['fields']:
-                    current_row.append(getattr(value, field_name))
-                context['row_data'].append(current_row)
-
-        return context
-
-
-class InventoryOrderList(BaseListView):
+class InventoryOrderList(LibCommonViews.BaseListView):
     model = models.InventoryOrder
+    fields = [
+        ('id', 'ID'),
+        ('customer', 'Customer'),
+        ('inventory', 'Inventory'),
+        ('comments', 'Comments'),
+    ]
+
+    def get_queryset(self):
+        # only logged in customer data
+        return self.model.objects.filter(customer=self.request.user)
+
+
+class InventoryOrder(LibCommonViews.BaseDetailView):
+    model = models.InventoryOrder
+    fields = [
+        ('id', 'ID'),
+        ('customer', 'Customer'),
+        ('inventory', 'Inventory'),
+        ('comments', 'Comments'),
+    ]
+
+    def get_object(self):
+        obj = super(InventoryOrder, self).get_object()
+        return obj
+
+    def get_queryset(self):
+        # only logged in customer data
+        qs = super(InventoryOrder, self).get_queryset().filter(customer=self.request.user)
+        return qs
+
+
+class InventoryOrderCreate(LibCommonViews.BaseCreateView):
+    model = models.InventoryOrder
+    fields = ['inventory', 'comments']
+    success_url = '/orders/'
+
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.customer = user
+        return super(InventoryOrderCreate, self).form_valid(form)
+
+class InventoryOrderUpdate(LibCommonViews.BaseUpdateView):
+    model = models.InventoryOrder
+    fields = ['inventory', 'comments']
+    success_url = '/orders/'
+
+    def get_queryset(self):
+        # only logged in customer data
+        qs = super(InventoryOrderUpdate, self).get_queryset().filter(customer=self.request.user)
+        return qs

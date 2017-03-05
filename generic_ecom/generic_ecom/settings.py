@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # custom middleware
-    'lib_common.middleware.audit_log.AuditLogMiddleware',
+    # 'lib_common.middleware.audit_log.AuditLogMiddleware',
 ]
 
 ROOT_URLCONF = 'generic_ecom.urls'
@@ -66,6 +66,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            os.path.join(BASE_DIR, 'core', 'templates'),
             os.path.join(BASE_DIR, 'lib_common', 'templates')
         ],
         'APP_DIRS': True,
@@ -138,6 +139,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGIN_URL='/login/'
+LOGIN_REDIRECT_URL='/login/'
 
 LOGGING = {
     'version': 1,

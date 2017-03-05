@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="well">
+	<h3>{% trans "Currently logged in" %}</h3>
+	<b>Username:</b> {{ user.username }}<br>
+	<b>User Email:</b> {{ user.email }}<br>
+	<b>User Group:</b> {{ user_groups }}
+</div>
+
+{% endblock %}

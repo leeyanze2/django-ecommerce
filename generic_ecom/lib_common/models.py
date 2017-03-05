@@ -18,12 +18,12 @@ class BaseModel(models.Model):
 
     """BaseModel has audit log handling"""
     is_deleted = models.BooleanField(default=False)
-    created = models.DateTimeField(editable=False)
-    modified = models.DateTimeField(editable=False)
-    created_by = models.ForeignKey(
-        ExtendedUser, related_name="%(app_label)s_%(class)s_created_by_user", editable=False)
-    modified_by = models.ForeignKey(
-        ExtendedUser, related_name="%(app_label)s_%(class)s_modified_by_user", editable=False)
+    # created = models.DateTimeField(editable=False)
+    # modified = models.DateTimeField(editable=False)
+    # created_by = models.ForeignKey(
+    #     ExtendedUser, related_name="%(app_label)s_%(class)s_created_by_user", editable=False)
+    # modified_by = models.ForeignKey(
+    #     ExtendedUser, related_name="%(app_label)s_%(class)s_modified_by_user", editable=False)
 
     objects = BaseNotDeletedManager()
     allobjects = models.Manager()

@@ -17,10 +17,14 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
-from core.views import login
+from django.contrib.auth.decorators import login_required, permission_required
+
+from core import views
 
 urlpatterns = [
-    url(r'^login/', login, name="login"),
+    url(r'^$', login_required(views.LandingView.as_view()), name='index'),
+    url(r'^login/', views.LoginView.as_view(), name="login"),
+    url(r'^logout', views.LogoutView.as_view(), name='logout'),
     url(r'^admin/', admin.site.urls),
     url(r'^api-token-auth/', obtain_jwt_token),
     url(r'^api-token-refresh/', refresh_jwt_token),
