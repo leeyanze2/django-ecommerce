@@ -86,7 +86,8 @@ class InventoryOrder(LibCommonViews.BaseDetailView):
 
     def get_queryset(self):
         # only logged in customer data
-        qs = super(InventoryOrder, self).get_queryset().filter(customer=self.request.user)
+        qs = super(InventoryOrder, self).get_queryset().filter(
+            customer=self.request.user)
         return qs
 
 
@@ -100,6 +101,7 @@ class InventoryOrderCreate(LibCommonViews.BaseCreateView):
         form.instance.customer = user
         return super(InventoryOrderCreate, self).form_valid(form)
 
+
 class InventoryOrderUpdate(LibCommonViews.BaseUpdateView):
     model = models.InventoryOrder
     fields = ['inventory', 'comments']
@@ -107,5 +109,6 @@ class InventoryOrderUpdate(LibCommonViews.BaseUpdateView):
 
     def get_queryset(self):
         # only logged in customer data
-        qs = super(InventoryOrderUpdate, self).get_queryset().filter(customer=self.request.user)
+        qs = super(InventoryOrderUpdate, self).get_queryset().filter(
+            customer=self.request.user)
         return qs

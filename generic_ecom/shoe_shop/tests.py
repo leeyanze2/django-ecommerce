@@ -76,6 +76,11 @@ class ShoesShopTest(TestCase):
         new_data['inventory'] = self.inventory.id
         new_data['comments'] = "baad"
 
+        response = self.c.get('/orders/add/')
+
+        # testing page integrity
+        self.assertEqual(response.status_code, 200)
+
         # testing data integrity
         original_count = models.InventoryOrder.objects.count()
         response = self.c.post('/orders/add/', new_data)
@@ -92,6 +97,7 @@ class ShoesShopTest(TestCase):
         # testing page integrity
         self.assertEqual(response.status_code, 200)
 
+        # testing data integrity
         original_comments = obj_dict["comments"]
         obj_dict["comments"] = original_comments + "_changed"
         response = self.c.post(
