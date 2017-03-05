@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for generic_ecom project.
 
@@ -175,6 +176,11 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Singapore'
 
 USE_I18N = True
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('zh-hans', '中文'),
+]
 
 USE_L10N = True
 
