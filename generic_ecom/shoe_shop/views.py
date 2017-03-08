@@ -112,3 +112,14 @@ class InventoryOrderUpdate(LibCommonViews.BaseUpdateView):
         qs = super(InventoryOrderUpdate, self).get_queryset().filter(
             customer=self.request.user)
         return qs
+
+
+class InventoryOrderDelete(LibCommonViews.BaseDeleteView):
+    model = models.InventoryOrder
+    success_url = '/orders/'
+
+    def get_queryset(self):
+        # only logged in customer data
+        qs = super(InventoryOrderDelete, self).get_queryset().filter(
+            customer=self.request.user)
+        return qs

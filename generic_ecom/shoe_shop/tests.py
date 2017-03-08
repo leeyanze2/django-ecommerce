@@ -105,3 +105,21 @@ class ShoesShopTest(TestCase):
 
         new_obj = models.InventoryOrder.objects.get(pk=obj.id)
         self.assertEqual(new_obj.comments, original_comments + "_changed")
+
+    def test_delete(self):
+        obj = models.InventoryOrder.objects.get(pk=self.inventory_order.id)
+        obj_dict = model_to_dict(obj)
+
+        response = self.c.get(
+            '/order/delete/' + str(self.inventory_order.id) + '/')
+
+        # testing page integrity
+        self.assertEqual(response.status_code, 200)
+
+        # testing data integrity
+        original_count = models.InventoryOrder.objects.count()
+        response = self.c.post(
+            '/order/delete/' + str(self.inventory_order.id) + '/')
+
+        self.assertEqual(models.InventoryOrder.objects.count(),
+                         original_count - 1)

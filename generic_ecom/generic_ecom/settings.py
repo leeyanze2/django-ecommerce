@@ -93,15 +93,6 @@ DATABASES = {
         'NAME': 'shoe_shop',
         'USER': 'root',
         'PASSWORD': 'demodemo',
-    },
-    'replica': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_shoe_shop',
-        'USER': 'root',
-        'PASSWORD': 'demodemo',
-        'TEST': {
-            'MIRROR': 'default',
-        },
     }
 }
 

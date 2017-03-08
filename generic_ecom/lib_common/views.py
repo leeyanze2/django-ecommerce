@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import Http404
 from django.views import View
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.forms.models import model_to_dict
@@ -55,8 +55,14 @@ class BaseListView(ListView):
                     '" class="btn btn-warning" role="button">{}</a>'.format(
                         _('Edit'))
 
+                # adding Action-Delete
+                delete_button_html = '<a href="/order/delete/' + \
+                    str(value.id) + \
+                    '" class="btn btn-danger" role="button">{}</a>'.format(
+                        _('Delete'))
+
                 current_row.append(
-                    mark_safe(mark_safe(detail_button_html) + " " + mark_safe(edit_button_html)))
+                    mark_safe(mark_safe(detail_button_html) + " " + mark_safe(edit_button_html) + " " + mark_safe(delete_button_html)))
 
                 context['row_data'].append(current_row)
 
@@ -85,7 +91,8 @@ class BaseDetailView(DetailView):
                 cls_relatedto = self.model._meta.get_field(key).rel.to
                 try:
                     if hasattr(cls_relatedto, "allobjects"):
-                        associated_data = cls_relatedto.allobjects.get(pk=value)
+                        associated_data = cls_relatedto.allobjects.get(
+                            pk=value)
                     else:
                         associated_data = cls_relatedto.objects.get(pk=value)
                     obj[key] = str(associated_data)
@@ -100,7 +107,12 @@ class BaseDetailView(DetailView):
 class BaseCreateView(CreateView):
     template_name = 'generic/add.html'
 
+
 class BaseUpdateView(UpdateView):
     # using same template
     template_name = 'generic/add.html'
-        
+
+
+class BaseDeleteView(DeleteView):
+    # using same template
+    template_name = 'generic/delete.html'
