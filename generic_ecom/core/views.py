@@ -7,6 +7,8 @@ from django.views import View
 
 from django.shortcuts import render, redirect
 
+from generic_ecom.settings import NV_CLIENT_DETAILS
+
 
 # @login_required(login_url='login/')
 class LandingView(View):
@@ -66,6 +68,7 @@ class LoginView(View):
         from .forms import FormLogin
         context['form'] = FormLogin
         context['layout_hide_nav'] = True
+        context['shop_name'] = NV_CLIENT_DETAILS.get("SHOP_NAME", "")
 
         return context
 

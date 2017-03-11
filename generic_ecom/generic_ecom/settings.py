@@ -13,6 +13,25 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
+# This settings files should be further refactored into another file
+# But for convenience, I shall leave it as such in the challenge
+NV_CURRENT_CLIENT = 'shoe_shop' # possible values are "shoe_shop" and "slipper_shop"
+
+NV_CLIENT_DETAILS = {}
+if NV_CURRENT_CLIENT is 'shoe_shop':
+    NV_CLIENT_DETAILS['SHOP_NAME'] = '<Shoe Shop name>'
+    NV_CLIENT_DETAILS['DATABASE_NAME'] = 'shoe_shop'
+    # Other client specific things that must be here:
+    # Deployment related: "SECRET_KEY", "ALLOWED_HOSTS"
+    # Client related: Timezone probably
+
+if NV_CURRENT_CLIENT is 'slipper_shop':
+    NV_CLIENT_DETAILS['SHOP_NAME'] = '<Slipper Shop name>'
+    NV_CLIENT_DETAILS['DATABASE_NAME'] = 'slipper_shop'
+
+
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,8 +46,6 @@ SECRET_KEY = 'x1k93#m)77hbw7256cfm)s+3pt@(dp41p5px*5l%hit%6ha1$2'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-CURRENT_CLIENT = "shoe_shop"
 
 # Application definition
 
@@ -72,6 +89,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'lib_common.context_processors.base_html',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -90,7 +108,7 @@ WSGI_APPLICATION = 'generic_ecom.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'shoe_shop',
+        'NAME': NV_CURRENT_CLIENT,
         'USER': 'root',
         'PASSWORD': 'demodemo',
     }
@@ -111,7 +129,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-AUTH_USER_MODEL = 'shoe_shop.ExtendedUser'
+AUTH_USER_MODEL = NV_CURRENT_CLIENT + '.ExtendedUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators

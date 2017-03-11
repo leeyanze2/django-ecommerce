@@ -28,7 +28,7 @@
     <!-- <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"> -->
     <head>
         <meta charset="UTF-8">
-        <title>{% trans "Ecom" %}</title>
+        <title>{% trans nv_client.shop_name %}</title>
     </head>
     <body>
         {% if layout_hide_nav is true %}
@@ -43,7 +43,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="#">{% trans "Ecom" %}</a>
+                            <a class="navbar-brand" href="#">{% trans nv_client.shop_name %}</a>
                         </div>
                         <div id="navbar" class="collapse navbar-collapse">
                             <ul class="nav navbar-nav">

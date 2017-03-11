@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
-from generic_ecom.settings import CURRENT_CLIENT
+from generic_ecom.settings import NV_CURRENT_CLIENT
 import importlib
-module = importlib.import_module(CURRENT_CLIENT + '.model_user')
+module = importlib.import_module(NV_CURRENT_CLIENT + '.model_user')
 ExtendedUser = getattr(module, "ExtendedUser")
 
 
