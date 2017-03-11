@@ -17,7 +17,7 @@ import os
 # But for convenience, I shall leave it as such in the challenge
 
 # possible values are "shoe_shop" and "slipper_shop"
-NV_CURRENT_CLIENT = 'shoe_shop'
+NV_CURRENT_CLIENT = 'slipper_shop'
 
 NV_CLIENT_DETAILS = {}
 if NV_CURRENT_CLIENT is 'shoe_shop':

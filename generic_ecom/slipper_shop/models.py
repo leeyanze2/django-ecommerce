@@ -16,15 +16,15 @@ from lib_common.models import BaseModel, BaseInventoryType
 from model_user import ExtendedUser
 
 
-class Color(Enum):
-    DARK_BLUE = 'B1'
-    LIGHT_BLUE = 'B2'
-    YELLOW = 'Y1'
+# class Color(Enum):
+#     DARK_BLUE = 'B1'
+#     LIGHT_BLUE = 'B2'
+#     YELLOW = 'Y1'
 
-    class Labels:
-        DARK_BLUE = _('Dark Blue')
-        LIGHT_BLUE = _('Light Blue')
-        YELLOW = _('Yellow')
+#     class Labels:
+#         DARK_BLUE = _('Dark Blue')
+#         LIGHT_BLUE = _('Light Blue')
+#         YELLOW = _('Yellow')
 
 
 class InventoryType(BaseInventoryType):
@@ -39,7 +39,7 @@ class Inventory(BaseModel):
     name = models.CharField(max_length=100, db_index=True)
     item_type = models.ForeignKey(InventoryType)
     item_size = models.PositiveSmallIntegerField()
-    item_color = EnumField(Color, max_length=2)
+    # item_color = EnumField(Color, max_length=2) # because this is not shoe
     # if we are strictly storing only USD, probably this config for max digits
     # and decimals will be sufficient
     item_price = MoneyField(
