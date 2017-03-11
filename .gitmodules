@@ -1,0 +1,3 @@
+[submodule "generic_ecom/lib_common"]
+	path = generic_ecom/lib_common
+	url = https://github.com/leeyanze2/lib_common.git
