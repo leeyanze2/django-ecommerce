@@ -21,12 +21,14 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 from core import views
 
+from generic_ecom.settings import NV_CURRENT_CLIENT
+
 urlpatterns = [
     url(r'^$', login_required(views.LandingView.as_view()), name='index'),
-    url(r'^login/', views.LoginView.as_view(), name="login"),
-    url(r'^logout', views.LogoutView.as_view(), name='logout'),
+    url(r'^login/?', views.LoginView.as_view(), name="login"),
+    url(r'^logout/?', views.LogoutView.as_view(), name='logout'),
     url(r'^admin/', admin.site.urls),
-    url(r'^api-token-auth/', obtain_jwt_token),
-    url(r'^api-token-refresh/', refresh_jwt_token),
-    url(r'^', include('shoe_shop.urls')),
+    url(r'^api-token-auth/?', obtain_jwt_token),
+    url(r'^api-token-refresh/?', refresh_jwt_token),
+    url(r'^', include(NV_CURRENT_CLIENT+'.urls')),
 ]

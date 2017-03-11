@@ -15,7 +15,9 @@ import os
 
 # This settings files should be further refactored into another file
 # But for convenience, I shall leave it as such in the challenge
-NV_CURRENT_CLIENT = 'shoe_shop' # possible values are "shoe_shop" and "slipper_shop"
+
+# possible values are "shoe_shop" and "slipper_shop"
+NV_CURRENT_CLIENT = 'shoe_shop'
 
 NV_CLIENT_DETAILS = {}
 if NV_CURRENT_CLIENT is 'shoe_shop':
@@ -28,8 +30,6 @@ if NV_CURRENT_CLIENT is 'shoe_shop':
 if NV_CURRENT_CLIENT is 'slipper_shop':
     NV_CLIENT_DETAILS['SHOP_NAME'] = '<Slipper Shop name>'
     NV_CLIENT_DETAILS['DATABASE_NAME'] = 'slipper_shop'
-
-
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -61,9 +61,15 @@ INSTALLED_APPS = [
     'enumfields',
     'drf_enum_field',
     'djmoney',
-    # apps
-    'shoe_shop.apps.ShoeShopConfig',
 ]
+
+# This settings files should be further refactored into another file
+# But for convenience, I shall leave it as such in the challenge
+# Can probably refactor using https://pypi.python.org/pypi/stringcase
+if NV_CURRENT_CLIENT is 'shoe_shop':
+    INSTALLED_APPS.append('shoe_shop.apps.ShoeShopConfig')
+if NV_CURRENT_CLIENT is 'slipper_shop':
+    INSTALLED_APPS.append('slipper_shop.apps.SlipperShopConfig')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -149,8 +155,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_URL='/login/'
-LOGIN_REDIRECT_URL='/login/'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/login/'
 
 LOGGING = {
     'version': 1,
