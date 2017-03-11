@@ -11,7 +11,7 @@ class InventoryTypeAdmin(admin.ModelAdmin):
 
 
 class InventoryAdmin(admin.ModelAdmin):
-    list_display = ['id', 'sku', 'name', 'item_type', 'item_size', 
+    list_display = ['id', 'sku', 'name', 'item_type', 'item_size', 'item_color', 
                     'item_price',
                     # 'created', 'created_by', 'modified', 'modified_by'
                     ]
