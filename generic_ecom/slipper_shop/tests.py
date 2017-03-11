@@ -7,7 +7,7 @@ from .model_user import ExtendedUser
 from . import models
 
 
-class ShoesShopTest(TestCase):
+class SlippersShopTest(TestCase):
 
     def setUp(self):
         # creating logged in user
@@ -37,10 +37,10 @@ class ShoesShopTest(TestCase):
 
         inventory_vars = {}
         inventory_vars['sku'] = "item-1"
-        inventory_vars['name'] = "Nike Shoes"
+        inventory_vars['name'] = "Nike Slippers"
         inventory_vars['item_type'] = self.inventory_type
         inventory_vars['item_size'] = 2
-        inventory_vars['item_color'] = 'B1'
+        # inventory_vars['item_color'] = 'B1' # because this is not shoe
         inventory_vars['item_price'] = 64.00
         # inventory_vars.update(self.audit_log_vars)
         self.inventory = models.Inventory(**inventory_vars)
