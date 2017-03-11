@@ -8,10 +8,53 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.forms.models import model_to_dict
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from django.db import models
 
 FIELD_DB_NAME = 0
 FIELD_DISPLAY_NAME = 1
+
+
+class BaseRestInventoryOrder(APIView):
+    def initial(self, request, *args, **kwargs):
+        self.nv_models = kwargs.get('nv_params', {}).get('models', None)
+        self.InventoryOrderSerializer = kwargs.get('nv_params', {}).get('InventoryOrderSerializer', None)
+        super(BaseRestInventoryOrder, self).initial(request, *args, **kwargs)
+
+    def post(self, request, format=None):
+        """ Current user will place order"""
+        inventory_id = request.data.get('inventory_id', None)
+
+        user_id = None
+        if hasattr(request, 'user'):
+            user_id = request.user.id
+
+        if inventory_id is not None and user_id is not None:
+            try:
+                inventory_item = self.nv_models.Inventory.objects.get(
+                    pk=inventory_id)
+            except self.nv_models.Inventory.DoesNotExist:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            try:
+                user = self.nv_models.ExtendedUser.objects.get(pk=user_id)
+            except self.nv_models.ExtendedUser.DoesNotExist:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                new_data = {}
+                new_data['inventory'] = inventory_item
+                new_data['customer'] = user
+                new_order = self.nv_models.InventoryOrder(**new_data)
+                new_order.save()
+
+                return Response(self.InventoryOrderSerializer(new_order).data)
+            except Exception as e:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class BaseListView(ListView):
@@ -105,11 +148,12 @@ class BaseDetailView(DetailView):
 
 
 class BaseCreateView(CreateView):
+    # using same template: Add && Edit
     template_name = 'generic/add.html'
 
 
 class BaseUpdateView(UpdateView):
-    # using same template
+    # using same template: Add && Edit
     template_name = 'generic/add.html'
 
 

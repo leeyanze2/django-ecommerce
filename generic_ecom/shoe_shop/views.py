@@ -15,46 +15,20 @@ from serializers import InventorySerializer, InventoryOrderSerializer
 
 
 class RestInventoryList(APIView):
-
     def get(self, request, format=None):
         inventory = models.Inventory.objects.all()
         serializer = InventorySerializer(inventory, many=True)
         return Response(serializer.data)
 
 
-class RestInventoryOrder(APIView):
-
-    # todo:mal: this function can be refactored later
-    def post(self, request, format=None):
-        """ Current user will place order"""
-        inventory_id = request.data.get('inventory_id', None)
-
-        user_id = None
-        if hasattr(request, 'user'):
-            user_id = request.user.id
-
-        if inventory_id is not None and user_id is not None:
-            try:
-                inventory_item = models.Inventory.objects.get(pk=inventory_id)
-            except models.Inventory.DoesNotExist:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-            try:
-                user = models.ExtendedUser.objects.get(pk=user_id)
-            except models.ExtendedUser.DoesNotExist:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-
-            try:
-                new_data = {}
-                new_data['inventory'] = inventory_item
-                new_data['customer'] = user
-                new_order = models.InventoryOrder(**new_data)
-                new_order.save()
-
-                return Response(InventoryOrderSerializer(new_order).data)
-            except Exception as e:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+class RestInventoryOrder(LibCommonViews.BaseRestInventoryOrder):
+    def initial(self, request, *args, **kwargs):
+        # setting the params so can refactor into a common parent
+        kwargs['nv_params'] = {}
+        kwargs['nv_params']['models'] = models
+        kwargs['nv_params'][
+            'InventoryOrderSerializer'] = InventoryOrderSerializer
+        super(RestInventoryOrder, self).initial(request, *args, **kwargs)
 
 
 class InventoryOrderList(LibCommonViews.BaseListView):
